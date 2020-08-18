@@ -1,0 +1,36 @@
+{
+  "name": "savvycoders-week11-node-express-server",
+  "version": "0.0.1",
+  "description": "Example Express API Server",
+  "main": "index.js",
+  "scripts": {
+    "watch:server": "nodemon --watch  -e js ./index.js",
+    "start": "node ./index.js"
+  },
+  "keywords": [],
+  "author": "SavvyCoders",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "nodemon": "^2.0.4",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^2.0.4",
+    "stylelint": "^13.3.0",
+    "stylelint-config-prettier": "^8.0.1",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-prettier": "^1.1.2",
+    "stylelint-vscode": "^7.0.0-6"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "lodash-id": "^0.14.0",
+    "lowdb": "^1.0.0",
+    "morgan": "^1.10.0",
+    "navigo": "^7.1.2"
+  }
+}
