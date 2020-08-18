@@ -2,10 +2,10 @@
   "name": "savvycoders-week11-node-express-server",
   "version": "0.0.1",
   "description": "Example Express API Server",
-  "main": "index.js",
+  "main": "./server/index.js",
   "scripts": {
-    "watch:server": "nodemon --watch  -e js ./index.js",
-    "start": "node ./index.js"
+    "watch:server": "nodemon --watch  -e js ./server/index.js",
+    "start": "node ./server/index.js"
   },
   "keywords": [],
   "author": "SavvyCoders",
