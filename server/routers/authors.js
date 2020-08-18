@@ -1,75 +1,83 @@
 const { Router } = require('express');
 const router = Router();
-const db = require('../simpleDb.js');
+const db = require('../db.js');
 
 router
   .route('/')
   .get((request, response) => {
-    const authors = db.get('authors').value();
-    response.send(authors);
+    db.query('SELECT * FROM authors', (error, res) => {
+      if (error) {
+        response.status(500).json({ error }); // send the SQL error if something goes wrong
+      } else {
+        console.log(res.rows);
+        response.json(res.rows);
+      }
+    });
   })
   .post((request, response) => {
-    console.log(request.body);
-    const post = db.get('authors').insert(request.body).write();
-
-    response.send(post);
+    const newAuthor = request.body;
+    db.query(
+      `INSERT INTO authors(name, email) VALUES($1, $2) RETURNING *`,
+      [newAuthor.name, newAuthor.email],
+      (error, res) => {
+        if (error) {
+          response.status(500).json({ error }); // send the SQL error if something goes wrong
+        } else {
+          response.json(res.rows[0]);
+        }
+      }
+    );
   });
 
 router
   .route('/:id')
   .get((request, response) => {
     const id = request.params.id;
-    let contents = '';
 
-    request.on('data', (chunk) => (contents += chunk));
-
-    request.on('end', () => {
-      const post = db
-        .get('authors')
-        .updateById(id, {
-          body: contents,
-        })
-        .write();
-
-      if (post) {
-        response.send(post);
+    db.query('SELECT * FROM authors WHERE id = $1', [id], (error, res) => {
+      if (error) {
+        response.status(500).json({ error }); // send the SQL error if something goes wrong
       } else {
-        response.status(404).send('That ID does not exist');
+        if (res.rows.length === 0) {
+          response.status(404).json({ error: 'ID does not exist', id });
+        }
+        response.json(res.rows[0]);
       }
     });
   })
   .patch((request, response) => {
     const id = request.params.id;
-    let contents = '';
-
-    request.on('data', (chunk) => (contents += chunk));
-
-    request.on('end', () => {
-      const post = db
-        .get('authors')
-        .updateById(id, {
-          body: contents,
-        })
-        .write();
-
-      if (post) {
-        response.send(post);
-      } else {
-        response.status(404).send('Not Found');
+    db.query(
+      'UPDATE authors SET $1 = $2, WHERE id = $1',
+      [id],
+      (error, res) => {
+        if (error) {
+          response.status(500).json({ error }); // send the SQL error if something goes wrong
+        } else {
+          if (res.rows.length === 0) {
+            response.status(404).json({ error: 'ID does not exist', id });
+          }
+          response.json(res.rows[0]);
+        }
       }
-    });
-
-    response.status(500).send('Internal Server Error');
+    );
   })
   .delete((request, response) => {
     const id = request.params.id;
-    const post = db.get('authors').removeById(id).write();
-
-    if (post) {
-      response.send(post);
-    } else {
-      response.status(404).send('Not Found');
-    }
+    db.query(
+      'DELETE FROM authors WHERE id = $1 RETURNING *',
+      [id],
+      (error, res) => {
+        if (error) {
+          response.status(500).json({ error }); // send the SQL error if something goes wrong
+        } else {
+          if (res.rows.length === 0) {
+            response.status(404).json({ error: 'ID does not exist', id });
+          }
+          response.json(res.rows[0]);
+        }
+      }
+    );
   });
 
 module.exports = router;

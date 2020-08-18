@@ -4,7 +4,7 @@
   "description": "Example Express API Server",
   "main": "./server/index.js",
   "scripts": {
-    "watch:server": "nodemon --watch  -e js ./server/index.js",
+    "watch:server": "PGPASSWORD=password nodemon --watch ./server  -e js ./server/index.js",
     "start": "node ./server/index.js",
     "lint": "eslint ./server",
     "lint:fix": "eslint ./server --fix"
@@ -36,6 +36,7 @@
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
     "morgan": "^1.10.0",
-    "navigo": "^7.1.2"
+    "navigo": "^7.1.2",
+    "pg": "^8.3.2"
   }
 }
