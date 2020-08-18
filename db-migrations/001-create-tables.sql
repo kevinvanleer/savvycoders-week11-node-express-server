@@ -1,0 +1,12 @@
+CREATE TABLE authors (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL
+);
+
+CREATE TABLE posts (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  author_id INTEGER REFERENCES authors NOT NULL
+);
